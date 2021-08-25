@@ -8,16 +8,24 @@ data:
                             CONSTRAINT name_pk PRIMARY KEY (name)
                             );   
     CREATE TABLE macd (name VARCHAR(20), 
-                       data_date date,
+                       stats_date date,
                        high, 
                        low,
-                       CONSTRAINT name_pk PRIMARY KEY (name, data_date)
+                       CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
                        FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
                        );    
     CREATE TABLE stochastic (name VARCHAR(20), 
-                             data_date date,
+                             stats_date date,
                              high, 
                              low,
-                             CONSTRAINT name_pk PRIMARY KEY (name, data_date)
+                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
+                             FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
+                             );
+    CREATE TABLE sma (name VARCHAR(20), 
+                             stats_date DATE,
+                             twenty_day DOUBLE, 
+                             fifty_day DOUBLE,
+                             twohundred_day DOUBLE,
+                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
                              FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
                              );  

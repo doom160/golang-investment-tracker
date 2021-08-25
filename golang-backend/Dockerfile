@@ -19,4 +19,4 @@ FROM scratch
 # Copy our static executable.
 COPY --from=builder /go/bin/main /go/bin/main
 # Run the hello binary.
-ENTRYPOINT ["/go/bin/hello"]
+ENTRYPOINT ["/go/bin/main"]
