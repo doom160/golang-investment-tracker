@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-demo
+data:
+  initialize.sql: |
+    CREATE TABLE watchlist (name VARCHAR(5), 
+                            CONSTRAINT name_pk PRIMARY KEY (name)
+                            );   
+    CREATE TABLE macd (name VARCHAR(20), 
+                       data_date date,
+                       high, 
+                       low,
+                       CONSTRAINT name_pk PRIMARY KEY (name, data_date)
+                       FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
+                       );    
+    CREATE TABLE stochastic (name VARCHAR(20), 
+                             data_date date,
+                             high, 
+                             low,
+                             CONSTRAINT name_pk PRIMARY KEY (name, data_date)
+                             FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
+                             );  
