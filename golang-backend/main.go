@@ -8,10 +8,6 @@ import (
     "net/http"
     "github.com/fxtlabs/date"
 	"github.com/leekchan/accounting"
-    "github.com/piquette/finance-go/quote"
-    "github.com/sirupsen/logrus"
-    "github.com/piquette/finance-go/chart"
-    "github.com/piquette/finance-go/datetime"
 )
 // https://query2.finance.yahoo.com/v8/finance/chart/AAPL?symbol=AAPL&period1=1605796200&period2=99999999999999&interval=1d
 /*
@@ -19,6 +15,9 @@ import (
 func getEpochTime() int64 {
     return time.Today().AddDate(0,-6,0)Unix()
 }
+
+https://www.reddit.com/r/sheets/wiki/apis/finance#wiki_finance_apis
+https://query2.finance.yahoo.com/v10/finance/quoteSummary/NVDA?modules=defaultKeyStatistics%2CassetProfile%2CtopHoldings%2CfundPerformance%2CfundProfile%2CesgScores&ssl=true
 
 
 */
@@ -43,7 +42,7 @@ func main() {
     body, err := ioutil.ReadAll(resp.Body)
     sb := string(body)
     fmt.Printf(sb)
-    for iter.Next() {
+    /*for iter.Next() {
         q := iter.Quote()
         fmt.Printf("------- %v -------\n", q.ShortName)
         fmt.Printf("Current Price: %v\n", cf.FormatMoney(q.Ask))
@@ -72,5 +71,5 @@ func main() {
 	 }
 	 if iter2.Err() != nil {
 	 	fmt.Println(iter2.Err())
-	 }
+	 }*/
 }
