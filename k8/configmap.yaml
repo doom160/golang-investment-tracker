@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: game-demo
+  name: mysql
 data:
   initialize.sql: |
+    use mysql
     CREATE TABLE watchlist (name VARCHAR(5), 
                             CONSTRAINT name_pk PRIMARY KEY (name)
                             );   
@@ -11,14 +12,14 @@ data:
                        stats_date date,
                        high, 
                        low,
-                       CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
+                       CONSTRAINT name_pk PRIMARY KEY (name, stats_date),
                        FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
                        );    
     CREATE TABLE stochastic (name VARCHAR(20), 
                              stats_date date,
                              high, 
                              low,
-                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
+                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date),
                              FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
                              );
     CREATE TABLE sma (name VARCHAR(20), 
@@ -26,6 +27,6 @@ data:
                              twenty_day DOUBLE, 
                              fifty_day DOUBLE,
                              twohundred_day DOUBLE,
-                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date)
+                             CONSTRAINT name_pk PRIMARY KEY (name, stats_date),
                              FOREIGN KEY(name) REFERENCES watchlist(name) ON DELETE CASCADE
                              );  
