@@ -2,7 +2,7 @@ package main
  
 import (
     "fmt"
-    "github.com/doom160/investment-tracker/equity"
+    equity "github.com/doom160/investment-tracker/equity"
 )
 
 

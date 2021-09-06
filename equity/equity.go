@@ -1,9 +1,7 @@
 package equity
 
 import (
-    "flag"
     "fmt"
-    "os"
     "encoding/json"
     "io/ioutil"
     "net/http"
@@ -24,7 +22,7 @@ https://query2.finance.yahoo.com/v10/finance/quoteSummary/NVDA?modules=defaultKe
 */
 
 
-func getHistoricalData(string ticker) {
+func getHistoricalData(ticker string) {
 
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
 
