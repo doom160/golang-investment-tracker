@@ -21,8 +21,7 @@ https://query2.finance.yahoo.com/v10/finance/quoteSummary/NVDA?modules=defaultKe
 
 */
 
-
-func getHistoricalData(ticker string) {
+func GetHistoricalData(ticker string) {
 
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
 
