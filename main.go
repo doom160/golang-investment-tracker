@@ -1,12 +1,14 @@
 package main
  
 import (
+    "fmt"
     equity "github.com/doom160/investment-tracker/equity"
 )
 
 
 func main() {
-     equity.GetHistoricalData("AAPL") 
+    stock := equity.GetEquity("AAPL") 
+    fmt.Println(stock.Chart.Result[0].Meta.RegularMarketPrice)
 }
 
 

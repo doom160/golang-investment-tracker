@@ -5,45 +5,36 @@ import (
     "encoding/json"
     "io/ioutil"
     "net/http"
+    "strings"
     "github.com/fxtlabs/date"
-//	"github.com/leekchan/accounting"
 )
-// https://query2.finance.yahoo.com/v8/finance/chart/AAPL?symbol=AAPL&period1=1605796200&period2=99999999999999&interval=1d
-/*
-
-func getEpochTime() int64 {
-    return time.Today().AddDate(0,-6,0)Unix()
-}
-
-https://www.reddit.com/r/sheets/wiki/apis/finance#wiki_finance_apis
-https://query2.finance.yahoo.com/v10/finance/quoteSummary/NVDA?modules=defaultKeyStatistics%2CassetProfile%2CtopHoldings%2CfundPerformance%2CfundProfile%2CesgScores&ssl=true
 
 
-*/
-
-func GetHistoricalData(ticker string) {
-
+func GetEquity(ticker string) Equity {
+    ticker = strings.ToUpper(ticker)
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
 
     resp, err := http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=1d",ticker, epoch))
 
     if err != nil {
-        fmt.Println(err)
+        fmt.Errorf("Error fetching market data for %s :%w", ticker, err)
+        return nil
     }
     defer resp.Body.Close()
-    body, err := ioutil.ReadAll(resp.Body)
-    sb := string(body)
-    //fmt.Printf(sb)
 
-    myStoredVariable := HistoryData{}
-    json.Unmarshal([]byte(sb), &myStoredVariable)
-    fmt.Printf("%f", myStoredVariable.HistoryData.Result[0].Meta.RegularMarketPrice)
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Errorf("Error loading data for %s :%w", ticker, err)
+    }
+
+    equity := Equity{}
+    json.Unmarshal([]byte(string(body)), &equity)
+    //fmt.Printf("%f", myStoredVariable.Chart.Result[0].Meta.RegularMarketPrice)
+    return equity
 }
 
-
-
-type HistoryData struct {
-	HistoryData Chart `json:"chart"`
+type Equity struct {
+	Equity Chart `json:"chart"`
 }
  
 type Chart struct {
