@@ -7,7 +7,7 @@ import (
 
 
 func main() {
-    stock, err := GetEquity("AAPL")
+    stock, err := equity.GetEquity("AAPL")
     if err != nil {
         fmt.Errorf("Error loading stock information %w", err)
     }
