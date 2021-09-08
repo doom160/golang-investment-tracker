@@ -1,6 +1,2 @@
-github.com/doom160/investment-tracker/equity v0.0.0-20210906145342-40ccf95890bf h1:I4U4ZESUPC29liCl4w0GMh3a5QoHNigvOFAprA/1BMc=
-github.com/doom160/investment-tracker/equity v0.0.0-20210906145342-40ccf95890bf/go.mod h1:LmIPuIetGN++5hCIIH6EaygLuuoDAoYuoco3lf7JbvM=
-github.com/doom160/investment-tracker/equity v0.0.0-20210906150707-9f05b0dcafa3 h1:nnnku2uAAkxK6yY5lPT+7/H45ZFyyszxuyHpYtDiKak=
-github.com/doom160/investment-tracker/equity v0.0.0-20210906150707-9f05b0dcafa3/go.mod h1:PC/uDw8W6DUfhgztvCRiKpLvmGAC1iB1lGhJkp1k+Lk=
 github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9 h1:NERIc41aohgojUAgWCCnN5B8dIXZsBo2UC04LR3tbao=
 github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9/go.mod h1:UoIEyXCyEJ1Zu3ejiUOSngl9U5Oe9S+qaNiYiUex2nk=

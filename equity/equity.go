@@ -1,4 +1,4 @@
-package equity
+package main
 
 import (
     "fmt"
@@ -9,32 +9,30 @@ import (
     "github.com/fxtlabs/date"
 )
 
-
-func GetEquity(ticker string) Equity {
+func GetEquity(ticker string) (equity Equity, err error) {
     ticker = strings.ToUpper(ticker)
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
-
-    resp, err := http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=1d",ticker, epoch))
+    
+    var resp *http.Response
+    resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=1d",ticker, epoch))
 
     if err != nil {
-        fmt.Errorf("Error fetching market data for %s :%w", ticker, err)
-        return nil
+        return equity, err
     }
     defer resp.Body.Close()
 
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        fmt.Errorf("Error loading data for %s :%w", ticker, err)
+        return equity, err
     }
 
-    equity := Equity{}
     json.Unmarshal([]byte(string(body)), &equity)
     //fmt.Printf("%f", myStoredVariable.Chart.Result[0].Meta.RegularMarketPrice)
-    return equity
+    return equity, nil
 }
 
 type Equity struct {
-	Equity Chart `json:"chart"`
+	Chart Chart `json:"chart"`
 }
  
 type Chart struct {
