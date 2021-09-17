@@ -53,7 +53,7 @@ type Meta struct {
 }
 
 type Indictators struct {
-    Quote Quote `json: "quote"`
+    Quote []Quote `json: "quote"`
 }
 
 type Quote struct {
