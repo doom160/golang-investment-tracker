@@ -43,7 +43,7 @@ type Chart struct {
 type Result struct {
 	Meta Meta `json: "meta"`
 	Timestamp  []int32    `json: "timestamp"`
-    Indictators Indictators `json: "indicators"`
+    Indicators Indicators `json: "indicators"`
 }
 
 type Meta struct {
@@ -52,7 +52,7 @@ type Meta struct {
     RegularMarketPrice float32 `json: "regularMarketPrice"`
 }
 
-type Indictators struct {
+type Indicators struct {
     Quote []Quote `json: "quote"`
 }
 
