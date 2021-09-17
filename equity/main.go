@@ -61,6 +61,6 @@ type Quote struct {
     High []float32 `json: "high"`
     Low []float32 `json: "low"`
     Close []float32 `json: "close"`
-    volume []int32 `json: "volume"`
+    Volume []int32 `json: "volume"`
 }
 
