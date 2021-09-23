@@ -9,7 +9,8 @@ import (
     "github.com/fxtlabs/date"
 )
 
-func GetEquity(ticker string) (equity Equity, err error) {
+func GetEquityInfo(ticker string) (equityInfo EquityInfo, err error) {
+    var equity Equity
     ticker = strings.ToUpper(ticker)
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
     
@@ -28,6 +29,17 @@ func GetEquity(ticker string) (equity Equity, err error) {
 
     json.Unmarshal([]byte(string(body)), &equity)
     //fmt.Printf("%f", myStoredVariable.Chart.Result[0].Meta.RegularMarketPrice)
+    equityInfo = EquityInfo{ Symbol: equity.Chart.Result[0].Meta.Symbol , 
+                             Currency: equity.Chart.Result[0].Meta.Currency,
+                             RegularMarketPrice: equity.Chart.Result[0].Meta.RegularMarketPrice,
+                             ChartPreviousClose: equity.Chart.Result[0].Meta.ChartPreviousClose,
+                             Timestamp: equity.Chart.Result[0].Timestamp,
+                             Open: equity.Chart.Result[0].Indicators.[0].Open,
+                             High: equity.Chart.Result[0].Indicators.[0].High,
+                             Low: equity.Chart.Result[0].Indicators.[0].Low ,
+                             Close: equity.Chart.Result[0].Indicators.[0].Close,
+                             Volume: equity.Chart.Result[0].Indicators.[0].Volume
+                             }
     return equity, nil
 }
 
@@ -50,6 +62,7 @@ type Meta struct {
 	Currency string `json: "currency"`
 	Symbol  string `json: "symbol"`
     RegularMarketPrice float32 `json: "regularMarketPrice"`
+    ChartPreviousClose float32 `json: "chartPreviousClose"`
 }
 
 type Indicators struct {
@@ -57,6 +70,19 @@ type Indicators struct {
 }
 
 type Quote struct {
+    Open []float32 `json: "open"`
+    High []float32 `json: "high"`
+    Low []float32 `json: "low"`
+    Close []float32 `json: "close"`
+    Volume []int32 `json: "volume"`
+}
+
+type EquityInfo struct {
+    Symbol  string `json: "symbol"`
+    Currency string `json: "currency"`
+    RegularMarketPrice float32 `json: "regularMarketPrice"`
+    ChartPreviousClose float32 `json: "chartPreviousClose"`
+    Timestamp  []int32    `json: "timestamp"`
     Open []float32 `json: "open"`
     High []float32 `json: "high"`
     Low []float32 `json: "low"`
