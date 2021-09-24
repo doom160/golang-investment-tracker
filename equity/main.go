@@ -9,13 +9,40 @@ import (
     "github.com/fxtlabs/date"
 )
 
-func GetEquityInfo(ticker string) (equityInfo EquityInfo, err error) {
+func verifyDateRange(frequency string) bool {
+    switch frequency {
+        case 
+            "1d", 
+            "5d", 
+            "1mo", 
+            "3mo", 
+            "6mo", 
+            "1y", 
+            "2y", 
+            "5y", 
+            "10y", 
+            "ytd",
+            "max":
+        return true
+    }
+    return false 
+}
+
+func GetEquityInfo(ticker string, dateRange DateRange) (equityInfo EquityInfo, err error) {
+    if !verifyDateRange(dateRange.Frequency){
+        return equityInfo, errors.New("dateRange.Frequency are not valid. {1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max}")
+    }
+
+    ticker = strings.ToUpper(strings.TrimSpace(ticker))
+    if ticker == "" {
+        return equityInfo, errors.New("ticker should not be empty")
+    }
+
     var equity Equity
-    ticker = strings.ToUpper(ticker)
     epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
     
     var resp *http.Response
-    resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=1d",ticker, epoch))
+    resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=%s",ticker, epoch, dateRange.Frequency))
 
     if err != nil {
         return equityInfo, err
@@ -41,6 +68,13 @@ func GetEquityInfo(ticker string) (equityInfo EquityInfo, err error) {
                              Volume:                equity.Chart.Result[0].Indicators.Quote[0].Volume}
                              
     return equityInfo, nil
+}
+
+type DateRange struct {
+    OffsetDay int32
+    OffsetMonth int32
+    OffsetYear int32
+    Frequency string
 }
 
 type Equity struct {

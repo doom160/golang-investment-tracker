@@ -37,6 +37,8 @@ func returnStock(w http.ResponseWriter, r *http.Request){
     if err != nil {
         fmt.Errorf("Error loading stock information %w", err)
     }
-    json.NewEncoder(w).Encode(string(b))
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    w.Write(b)
 }
 
