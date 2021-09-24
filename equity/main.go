@@ -18,29 +18,29 @@ func GetEquityInfo(ticker string) (equityInfo EquityInfo, err error) {
     resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=1d",ticker, epoch))
 
     if err != nil {
-        return equity, err
+        return equityInfo, err
     }
     defer resp.Body.Close()
 
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        return equity, err
+        return equityInfo, err
     }
 
     json.Unmarshal([]byte(string(body)), &equity)
     //fmt.Printf("%f", myStoredVariable.Chart.Result[0].Meta.RegularMarketPrice)
-    equityInfo = EquityInfo{ Symbol: equity.Chart.Result[0].Meta.Symbol , 
-                             Currency: equity.Chart.Result[0].Meta.Currency,
-                             RegularMarketPrice: equity.Chart.Result[0].Meta.RegularMarketPrice,
-                             ChartPreviousClose: equity.Chart.Result[0].Meta.ChartPreviousClose,
-                             Timestamp: equity.Chart.Result[0].Timestamp,
-                             Open: equity.Chart.Result[0].Indicators.[0].Open,
-                             High: equity.Chart.Result[0].Indicators.[0].High,
-                             Low: equity.Chart.Result[0].Indicators.[0].Low ,
-                             Close: equity.Chart.Result[0].Indicators.[0].Close,
-                             Volume: equity.Chart.Result[0].Indicators.[0].Volume
-                             }
-    return equity, nil
+    equityInfo = EquityInfo{ Symbol:                equity.Chart.Result[0].Meta.Symbol, 
+                             Currency:              equity.Chart.Result[0].Meta.Currency,
+                             RegularMarketPrice:    equity.Chart.Result[0].Meta.RegularMarketPrice,
+                             ChartPreviousClose:    equity.Chart.Result[0].Meta.ChartPreviousClose,
+                             Timestamp:             equity.Chart.Result[0].Timestamp,
+                             Open:                  equity.Chart.Result[0].Indicators.Quote[0].Open,
+                             High:                  equity.Chart.Result[0].Indicators.Quote[0].High,
+                             Low:                   equity.Chart.Result[0].Indicators.Quote[0].Low,
+                             Close:                 equity.Chart.Result[0].Indicators.Quote[0].Close,
+                             Volume:                equity.Chart.Result[0].Indicators.Quote[0].Volume}
+                             
+    return equityInfo, nil
 }
 
 type Equity struct {
@@ -89,4 +89,5 @@ type EquityInfo struct {
     Close []float32 `json: "close"`
     Volume []int32 `json: "volume"`
 }
+
 

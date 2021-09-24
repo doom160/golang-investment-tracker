@@ -14,8 +14,6 @@ func main() {
     handleRequests()
 }
 
-
-
 func homePage(w http.ResponseWriter, r *http.Request){
     fmt.Fprintf(w, "Welcome to the HomePage!")
     fmt.Println("Endpoint Hit: homePage")
@@ -30,10 +28,15 @@ func handleRequests() {
 
 func returnStock(w http.ResponseWriter, r *http.Request){
     ticker := r.FormValue("ticker")
-    stock, err := equity.GetEquity(ticker)
+    stock, err := equity.GetEquityInfo(ticker)
+    if err != nil {
+        fmt.Errorf("Error finding stock information %w", err)
+    }
+
+    b, err := json.Marshal(stock)
     if err != nil {
         fmt.Errorf("Error loading stock information %w", err)
     }
-    json.NewEncoder(w).Encode(stock)
+    json.NewEncoder(w).Encode(string(b))
 }
 
