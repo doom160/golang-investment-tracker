@@ -22,12 +22,16 @@ func homePage(w http.ResponseWriter, r *http.Request){
 func handleRequests() {
     var myRouter = mux.NewRouter()
     myRouter.Path("/").HandlerFunc(homePage)
+    myRouter.Path("/stocks").Queries("ticker","{ticker}", "date","{date}", "frequency","{frequency}").HandlerFunc(returnStock)
     myRouter.Path("/stocks").Queries("ticker","{ticker}").HandlerFunc(returnStock)
     log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
 func returnStock(w http.ResponseWriter, r *http.Request){
     ticker := r.FormValue("ticker")
+    date := r.FormValue("date")
+
+
     stock, err := equity.GetEquityInfo(ticker)
     if err != nil {
         fmt.Errorf("Error finding stock information %w", err)

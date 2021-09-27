@@ -29,20 +29,27 @@ func verifyDateRange(frequency string) bool {
 }
 
 func GetEquityInfo(ticker string, dateRange DateRange) (equityInfo EquityInfo, err error) {
-    if !verifyDateRange(dateRange.Frequency){
-        return equityInfo, errors.New("dateRange.Frequency are not valid. {1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max}")
-    }
 
+    // Validate ticker
     ticker = strings.ToUpper(strings.TrimSpace(ticker))
     if ticker == "" {
         return equityInfo, errors.New("ticker should not be empty")
     }
 
+    // Validate dateRange
+    if dateRange.OffsetDay < 0 || dateRange.OffsetMonth < 0 || dateRange.OffsetYear < 0 {
+        return equityInfo, errors.New("DateRange OffsetDay, OffsetMonth, OffsetYear should be positive value")
+    }
+    if !verifyDateRange(dateRange.Frequency){
+        return equityInfo, errors.New("dateRange.Frequency are not valid. {1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max}")
+    }
+
     var equity Equity
-    epoch := date.Today().UTC().AddDate(0,-6,0).Unix()
-    
+    epoch := date.Today().UTC().AddDate(-dateRange.OffsetDay, -dateRange.OffsetMonth, -dateRange.OffsetYear).Unix()
+    currentDate := date.Today().UTC().Unix()
+
     var resp *http.Response
-    resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=99999999999999&interval=%s",ticker, epoch, dateRange.Frequency))
+    resp, err = http.Get(fmt.Sprintf("https://query2.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=%d&interval=%s",ticker, epoch, dateRange.Frequency, currentDate))
 
     if err != nil {
         return equityInfo, err
