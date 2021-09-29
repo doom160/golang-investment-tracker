@@ -78,9 +78,9 @@ func GetEquityInfo(ticker string, dateRange DateRange) (equityInfo EquityInfo, e
 }
 
 type DateRange struct {
-    OffsetDay int32
-    OffsetMonth int32
-    OffsetYear int32
+    OffsetDay int
+    OffsetMonth int
+    OffsetYear int
     Frequency string
 }
 
@@ -95,7 +95,7 @@ type Chart struct {
 
 type Result struct {
 	Meta Meta `json: "meta"`
-	Timestamp  []int32    `json: "timestamp"`
+	Timestamp  []int    `json: "timestamp"`
     Indicators Indicators `json: "indicators"`
 }
 

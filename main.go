@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "log"
+    "strconv"
     "net/http"
     "encoding/json"
     "github.com/gorilla/mux"
@@ -22,17 +23,50 @@ func homePage(w http.ResponseWriter, r *http.Request){
 func handleRequests() {
     var myRouter = mux.NewRouter()
     myRouter.Path("/").HandlerFunc(homePage)
-    myRouter.Path("/stocks").Queries("ticker","{ticker}", "date","{date}", "frequency","{frequency}").HandlerFunc(returnStock)
-    myRouter.Path("/stocks").Queries("ticker","{ticker}").HandlerFunc(returnStock)
+    myRouter.HandleFunc("/stocks", returnStock).Methods("GET")
     log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
 func returnStock(w http.ResponseWriter, r *http.Request){
-    ticker := r.FormValue("ticker")
-    date := r.FormValue("date")
+    params := r.URL.Query()
+    ticker := params.Get("ticker")
+    frequency := params.Get("frequency")
+    strYear := params.Get("year")
+    strMonth := params.Get("month")
+    strDay := params.Get("day")
 
+    var year, month, day int
+    if strYear != "" {
+        intYear, err := strconv.Atoi(strYear)
+        if err != nil {
+            fmt.Errorf("Invalid year provided %w/n", err)
+        }
+        if year < 0 {
+            fmt.Errorf("Invalid year provided/n")
+        }
+    }
+    if strMonth != "" {
+        month, err := strconv.Atoi(strMonth)
+        if err != nil {
+            fmt.Errorf("Invalid month provided %w/n", err)
+        }
+        if month < 0 {
+            fmt.Errorf("Invalid month provided/n")
+        }
+    }
+    if strDay != "" {
+        day, err := strconv.Atoi(strDay)
+        if err != nil {
+            fmt.Errorf("Error finding stock information %w/n", err)
+        }
+        if day < 0 {
+            fmt.Errorf("Invalid day provided/n")
+        }
+    }
+    
+    dateRange := equity.DateRange{OffsetDay: day, OffsetMonth: month, OffsetYear: year, Frequency: frequency}
 
-    stock, err := equity.GetEquityInfo(ticker)
+    stock, err := equity.GetEquityInfo(ticker,dateRange)
     if err != nil {
         fmt.Errorf("Error finding stock information %w", err)
     }
