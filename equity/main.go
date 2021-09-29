@@ -31,7 +31,7 @@ func verifyDateRange(frequency string) bool {
 func GetEquityInfo(ticker string, dateRange DateRange) (equityInfo EquityInfo, err error) {
 
     // Validate ticker
-    dateRange := DateRange{}
+    equityInfo := EquityInfo{}
     ticker = strings.ToUpper(strings.TrimSpace(ticker))
     if ticker == "" {
         return equityInfo, errors.New("ticker should not be empty")
