@@ -31,7 +31,7 @@ func verifyDateRange(frequency string) bool {
 func GetEquityInfo(ticker string, dateRange DateRange) (equityInfo EquityInfo, err error) {
 
     // Validate ticker
-    var equityInfo EquityInfo
+    dateRange := dateRange{}
     ticker = strings.ToUpper(strings.TrimSpace(ticker))
     if ticker == "" {
         return equityInfo, errors.New("ticker should not be empty")
@@ -124,7 +124,7 @@ type EquityInfo struct {
     Currency string `json: "currency"`
     RegularMarketPrice float32 `json: "regularMarketPrice"`
     ChartPreviousClose float32 `json: "chartPreviousClose"`
-    Timestamp  []int32    `json: "timestamp"`
+    Timestamp  []int    `json: "timestamp"`
     Open []float32 `json: "open"`
     High []float32 `json: "high"`
     Low []float32 `json: "low"`
